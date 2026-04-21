@@ -1,10 +1,9 @@
-import Image from "next/image";
+import FuturisticAuthHome from "@/components/Home/FuturisticAuthHome";
 
 export default function Home() {
   return (
-    <div className="p-8 dark:bg-black">
-      
-       <h1 className="text-3xl font-bold">Auth App</h1>
+    <div className="flex flex-colitems-center justify-center p-8 dark:bg-black">
+      <FuturisticAuthHome />
     </div>
   );
 }

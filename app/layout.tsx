@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Outfit, Ovo, Geist } from "next/font/google";
+import { Outfit, Ovo } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import Navbar from "@/components/Navbar";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -32,9 +30,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("antialiased", "leading-8", "overflow-x-hidden", "min-h-screen", "flex", "flex-col", outfit.className, ovo.className, "font-sans", geist.variable)}
+      className={`${outfit.className} ${ovo.className} antialiased leading-8 overflow-x-hidden min-h-screen flex flex-col`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col light">
+        <Navbar />
         <main className="grow">{children}</main>
       </body>
     </html>
