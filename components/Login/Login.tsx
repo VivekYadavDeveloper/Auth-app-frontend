@@ -56,7 +56,7 @@ export default function Login() {
           </div>
 
           {/* LOGIN BUTTON */}
-          <Button className="w-full bg-gradient-to-r from-purple-600 to-white text-black font-semibold hover:scale-[1.02] transition">
+          <Button className="w-full bg-linear-to-r from-purple-600 to-white text-black font-semibold hover:scale-[1.02] transition">
             Login
           </Button>
         </motion.form>

@@ -7,7 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { FaGithub, FaGoogle } from "react-icons/fa";
-
+import { useState } from "react";
+import toast from "react-hot-toast";
+import RegisterData from "@/Models/RegisterData";
+import { registerUser } from "@/Services/AuthService";
+import { useRouter } from "next/navigation";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -19,6 +23,57 @@ const fadeUp = {
 };
 
 export default function Signup() {
+  const [data, setData] = useState<RegisterData>({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState(null);
+
+  const navigation = useRouter();
+
+  /*The Function Use For Handling Form/Input Change*/
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log(e.target.name);
+    // console.log(e.target.value);
+    setData((value) => ({
+      ...value,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  /* HANDLING SUBMIT FORM*/
+
+  const handleFormSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault();
+    console.log(data);
+
+    if (
+      data.name.trim() === "" ||
+      data.email.trim() === "" ||
+      data.password.trim() === ""
+    ) {
+      return toast.error("Fill the required fields");
+    }
+
+    try {
+      const result = await registerUser(data);
+      console.log(result);
+      toast.success("Account Created Successfully");
+      setData({
+        name: "",
+        email: "",
+        password: "",
+      });
+      navigation.replace("/login");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong");
+    }
+  };
+
   return (
     <main className="min-h-screen flex items-center justify-center px-6 bg-white dark:bg-black text-gray-900 dark:text-white">
       <motion.div
@@ -35,13 +90,21 @@ export default function Signup() {
         </motion.div>
 
         {/* FORM */}
-        <motion.form variants={fadeUp} custom={2} className="space-y-4">
+        <motion.form
+          variants={fadeUp}
+          custom={2}
+          onSubmit={handleFormSubmit}
+          className="space-y-4"
+        >
           {/* USERNAME */}
           <div className="space-y-2">
             <Label>Username</Label>
             <Input
+              name="name"
+              value={data.name}
               type="text"
               placeholder="your_username"
+              onChange={handleInputChange}
               className="focus-visible:ring-purple-500"
             />
           </div>
@@ -53,6 +116,9 @@ export default function Signup() {
               type="email"
               placeholder="you@example.com"
               className="focus-visible:ring-purple-500"
+              name="email"
+              value={data.email}
+              onChange={handleInputChange}
             />
           </div>
 
@@ -63,6 +129,9 @@ export default function Signup() {
               type="password"
               placeholder="••••••••"
               className="focus-visible:ring-purple-500"
+              name="password"
+              value={data.password}
+              onChange={handleInputChange}
             />
           </div>
 

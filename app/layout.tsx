@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit, Ovo } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { Toaster } from "react-hot-toast";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
       className={`${outfit.className} ${ovo.className} antialiased leading-8 overflow-x-hidden min-h-screen flex flex-col`}
     >
       <body className="min-h-full flex flex-col light">
+        <Toaster/>
         <Navbar />
         <main className="grow">{children}</main>
       </body>
