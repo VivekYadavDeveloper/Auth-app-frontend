@@ -7,6 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { FaGithub, FaGoogle } from "react-icons/fa";
+import { useState } from "react";
+import LoginData from "@/Models/LoginData";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { loginUser } from "@/Services/AuthService";
+import { Alert, AlertTitle } from "../ui/alert";
+import { CiCircleAlert } from "react-icons/ci";
+import axios from "axios";
+import { Spinner } from "../ui/spinner";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -18,6 +27,54 @@ const fadeUp = {
 };
 
 export default function Login() {
+  const [loginData, setLoginData] = useState<LoginData>({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigation = useRouter();
+
+  // HANDLE INPUT CHANGE EVENT
+  const handelInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginData((value) => ({
+      ...value,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  // HANDLE FOR SUBMIT
+  const handleFormSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault();
+
+    if (loginData.email.trim() === "" || loginData.password.trim() === "") {
+      return toast.error("Fill the required fields");
+    }
+
+    console.log(loginData);
+    try {
+      setLoading(true);
+      const response = await loginUser(loginData);
+
+      console.log(response);
+
+      setLoginData({
+        email: "",
+        password: "",
+      });
+      toast.success("Login Successfully");
+      navigation.replace("/dashboard");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data.message);
+      }
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="min-h-screen flex items-center justify-center px-6 bg-white dark:bg-black text-gray-900 dark:text-white">
       <motion.div
@@ -33,8 +90,24 @@ export default function Login() {
           </p>
         </motion.div>
 
+        {/* ERROR  */}
+
+        <div>
+          {error && (
+            <Alert variant={"destructive"}>
+              <CiCircleAlert />
+              <AlertTitle>{error}</AlertTitle>
+            </Alert>
+          )}
+        </div>
+
         {/* FORM */}
-        <motion.form variants={fadeUp} custom={2} className="space-y-4">
+        <motion.form
+          onSubmit={handleFormSubmit}
+          variants={fadeUp}
+          custom={2}
+          className="space-y-4"
+        >
           {/* EMAIL */}
           <div className="space-y-2">
             <Label>Email</Label>
@@ -42,6 +115,9 @@ export default function Login() {
               type="email"
               placeholder="you@example.com"
               className="focus-visible:ring-purple-500"
+              name="email"
+              value={loginData.email}
+              onChange={handelInputChange}
             />
           </div>
 
@@ -52,12 +128,21 @@ export default function Login() {
               type="password"
               placeholder="••••••••"
               className="focus-visible:ring-purple-500"
+              name="password"
+              value={loginData.password}
+              onChange={handelInputChange}
             />
           </div>
 
           {/* LOGIN BUTTON */}
-          <Button className="w-full bg-linear-to-r from-purple-600 to-white text-black font-semibold hover:scale-[1.02] transition">
-            Login
+          <Button className="w-full cursor-pointer bg-linear-to-r from-purple-600 to-white text-black font-semibold hover:scale-[1.02] transition">
+            {loading ? (
+              <>
+                <Spinner /> Loading..
+              </>
+            ) : (
+              "Login"
+            )}
           </Button>
         </motion.form>
 
