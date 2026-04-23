@@ -1,7 +1,7 @@
-import RegisterData from "@/Models/RegisterData";
-import axios from "axios";
+import RegisterData from "@/models/RegisterData";
+import LoginData from "@/models/LoginData";
+import LoginResponseData from "@/models/LoginResponseData";
 import apiClient from "./Config/ApiClient";
-import LoginData from "@/Models/LoginData";
 
 // REGISTER FUNCTION
 export const registerUser = async (signupData: RegisterData) => {
@@ -11,6 +11,15 @@ export const registerUser = async (signupData: RegisterData) => {
 
 // LOGIN FUNCTION
 export const loginUser = async (loginUser: LoginData) => {
-  const response = await apiClient.post("/auth/login", loginUser);
+  const response = await apiClient.post<LoginResponseData>(
+    "/auth/login",
+    loginUser,
+  );
+  return response.data;
+};
+
+// LOGOUT FUNCTION
+export const logoutUser = async () => {
+  const response = await apiClient.post("/auth/logout");
   return response.data;
 };

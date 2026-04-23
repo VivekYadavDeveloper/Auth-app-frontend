@@ -8,14 +8,14 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { useState } from "react";
-import LoginData from "@/Models/LoginData";
+import LoginData from "@/models/LoginData";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { loginUser } from "@/Services/AuthService";
 import { Alert, AlertTitle } from "../ui/alert";
 import { CiCircleAlert } from "react-icons/ci";
 import axios from "axios";
 import { Spinner } from "../ui/spinner";
+import useAuth from "@/auth/store";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -35,6 +35,7 @@ export default function Login() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigation = useRouter();
+  const login = useAuth((state) => state.login);
 
   // HANDLE INPUT CHANGE EVENT
   const handelInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,15 +56,15 @@ export default function Login() {
     console.log(loginData);
     try {
       setLoading(true);
-      const response = await loginUser(loginData);
-
-      console.log(response);
-
-      setLoginData({
-        email: "",
-        password: "",
-      });
+      // const response = await loginUser(loginData);
+      const userInfo = await login(loginData);
+     
+      // setLoginData({
+      //   email: "",
+      //   password: "",
+      // });
       toast.success("Login Successfully");
+      //  console.log(userInfo);
       navigation.replace("/dashboard");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

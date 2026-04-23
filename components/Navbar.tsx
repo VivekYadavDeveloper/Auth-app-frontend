@@ -3,8 +3,15 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
+import useAuth from "@/auth/store";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const checkLogin = useAuth((state) => state.checkLogin);
+  const user = useAuth((state) => state.user);
+  const logout = useAuth((state) => state.logout);
+  const router = useRouter();
+
   return (
     <motion.nav
       initial={{ y: -40, opacity: 0 }}
@@ -25,30 +32,57 @@ export default function Navbar() {
 
         {/* NAV LINKS */}
         <div className="flex items-center gap-6">
-          <Link
-            href="/"
-            className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition"
-          >
-            Home
-          </Link>
-
-          {/* ACTION BUTTONS */}
-          <div className="flex items-center gap-3">
-            <Link href="/login">
-              <Button
-                variant="outline"
-                className="border-purple-500 text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 cursor-pointer"
+          {checkLogin() ? (
+            <>
+              <Link
+                href="#!"
+                className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition"
               >
-                Login
-              </Button>
-            </Link>
+                {user?.name}
+              </Link>
 
-            <Link href="/signup">
-              <Button className="cursor-pointer bg-linear-to-r from-purple-600 to-white text-black font-semibold hover:scale-105 transition">
-                Signup
-              </Button>
-            </Link>
-          </div>
+              {/* ACTION BUTTONS */}
+              <div className="flex items-center gap-3">
+                <Button
+                  onClick={() => {
+                    logout();
+                    router.replace("/login");
+                  }}
+                  variant="outline"
+                  className="border-purple-500 text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 cursor-pointer"
+                >
+                  Logout
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/"
+                className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition"
+              >
+                Home
+              </Link>
+
+              {/* ACTION BUTTONS */}
+              <div className="flex items-center gap-3">
+                <Link href="/login">
+                  <Button
+                    variant="outline"
+                    className="border-purple-500 text-purple-600 dark:text-purple-400 hover:bg-purple-500/10 cursor-pointer"
+                  >
+                    Login
+                  </Button>
+                </Link>
+
+                <Link href="/signup">
+                  <Button className="cursor-pointer bg-linear-to-r from-purple-600 to-white text-black font-semibold hover:scale-105 transition">
+                    Signup
+                  </Button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </motion.nav>

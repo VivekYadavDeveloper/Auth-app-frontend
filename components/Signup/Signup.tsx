@@ -9,8 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import RegisterData from "@/Models/RegisterData";
-import { registerUser } from "@/Services/AuthService";
+import RegisterData from "@/models/RegisterData";
+import { registerUser } from "@/services/AuthService";
 import { useRouter } from "next/navigation";
 
 const fadeUp = {
