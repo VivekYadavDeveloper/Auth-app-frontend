@@ -33,7 +33,7 @@ export default function RootLayout({
       lang="en"
       className={`${outfit.className} ${ovo.className} antialiased leading-8 overflow-x-hidden min-h-screen flex flex-col`}
     >
-      <body className="min-h-full flex flex-col light">
+      <body className="min-h-full flex flex-col dark">
         <Toaster/>
         <Navbar />
         <main className="grow">{children}</main>

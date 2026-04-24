@@ -35,7 +35,7 @@ export default function Navbar() {
           {checkLogin() ? (
             <>
               <Link
-                href="#!"
+                href="/dashboard/profile"
                 className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition"
               >
                 {user?.name}
