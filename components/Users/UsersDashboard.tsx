@@ -73,7 +73,7 @@ export default function UsersDashboard() {
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {item.title}
               </p>
-              <h2 className="text-2xl font-bold mt-2 bg-gradient-to-r from-purple-600 to-white dark:to-purple-300 bg-clip-text text-transparent">
+              <h2 className="text-2xl font-bold mt-2 bg-linear-to-r from-purple-600 to-white dark:to-purple-300 bg-clip-text text-transparent">
                 {item.value}
               </h2>
             </motion.div>

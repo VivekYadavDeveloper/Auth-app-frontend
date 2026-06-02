@@ -1,7 +1,5 @@
 import useAuth from "@/auth/store";
-import { rejects } from "assert";
 import axios from "axios";
-import { resolve } from "path";
 import { refreshToken } from "../AuthService";
 import toast from "react-hot-toast";
 

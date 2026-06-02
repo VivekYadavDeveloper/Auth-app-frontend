@@ -16,6 +16,7 @@ import { CiCircleAlert } from "react-icons/ci";
 import axios from "axios";
 import { Spinner } from "../ui/spinner";
 import useAuth from "@/auth/store";
+import OAuth2Buttons from "../OAuth2Buttons";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -58,7 +59,7 @@ export default function Login() {
       setLoading(true);
       // const response = await loginUser(loginData);
       const userInfo = await login(loginData);
-     
+
       // setLoginData({
       //   email: "",
       //   password: "",
@@ -90,9 +91,7 @@ export default function Login() {
             Login to your account to continue
           </p>
         </motion.div>
-
         {/* ERROR  */}
-
         <div>
           {error && (
             <Alert variant={"destructive"}>
@@ -101,7 +100,6 @@ export default function Login() {
             </Alert>
           )}
         </div>
-
         {/* FORM */}
         <motion.form
           onSubmit={handleFormSubmit}
@@ -146,7 +144,6 @@ export default function Login() {
             )}
           </Button>
         </motion.form>
-
         {/* DIVIDER */}
         <motion.div
           variants={fadeUp}
@@ -157,26 +154,8 @@ export default function Login() {
           <span className="text-xs text-gray-500">OR</span>
           <Separator className="flex-1" />
         </motion.div>
-
         {/* SOCIAL LOGIN */}
-        <motion.div variants={fadeUp} custom={4} className="space-y-3">
-          <Button
-            variant="outline"
-            className="w-full flex items-center gap-2 border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5"
-          >
-            <FaGoogle className="w-5 h-5" />
-            Continue with Google
-          </Button>
-
-          <Button
-            variant="outline"
-            className="w-full flex items-center gap-2 border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/5"
-          >
-            <FaGithub className="w-5 h-5" />
-            Continue with GitHub
-          </Button>
-        </motion.div>
-
+        <OAuth2Buttons />
         {/* FOOTER */}
         <motion.p
           variants={fadeUp}
